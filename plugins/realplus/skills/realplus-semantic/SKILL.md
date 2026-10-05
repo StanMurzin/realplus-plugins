@@ -65,10 +65,9 @@ The Snowflake agent answers in about 20 s with 1-2 SQL calls. Do the same:
      DIMENSIONS listings.listing_type, listings.borough
      WHERE listings.is_on_market)
    ORDER BY listing_type, borough;
-   -- or the same in plain SQL over the semantic view:
-   SELECT listing_type, borough, AGG(active_listings), AGG(median_asking_price)
-   FROM REALPLUS.GOLD.REALPLUS_BUSINESS GROUP BY 1, 2;
    ```
+   Use only this SEMANTIC_VIEW() form. Do not write `SELECT ... AGG(metric) FROM REALPLUS.GOLD.REALPLUS_BUSINESS`: many of its forms fail
+   with "Unsupported feature 'AGG'" and cost a wasted call.
    Metrics and facts don't mix in one SEMANTIC_VIEW() call. When a question needs logic the view lacks, write plain
    SQL on the base views using the `expr` of each item from the catalog.
 4. Answer by the response rules.
