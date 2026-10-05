@@ -10,22 +10,27 @@ You need a Snowflake user for the RealPlus account; without one the plugin can't
 ## Install in Codex
 
 ```
-codex plugin marketplace add StanMurzin/realplus-codex
+codex plugin marketplace add StanMurzin/realplus-plugins
 codex plugin add realplus@realplus
 ```
 
-Or in the Codex app: Plugins → **Add a marketplace** → Source `StanMurzin/realplus-codex` → install **RealPlus**.
+Or in the Codex app: Plugins → **Add a marketplace** → Source `StanMurzin/realplus-plugins` → install **RealPlus**.
 Node.js is not needed: the plugin uses the Node that comes with Codex. Windows only for now.
 
-## Install in Claude Code (terminal, VS Code, Claude Desktop's Code tab)
+## Install in Claude Code (terminal, VS Code)
 
 ```
-/plugin marketplace add StanMurzin/realplus-codex
+/plugin marketplace add StanMurzin/realplus-plugins
 /plugin install realplus@realplus
 ```
 
-Needs Node.js 20+ (`node --version`). For the Claude Desktop chat (not the Code tab) use the `realplus.mcpb`
-extension instead.
+Or type `/plugin` → Marketplaces → Add Marketplace → `StanMurzin/realplus-plugins` → install **realplus**.
+
+## Install in Claude Desktop
+
+Customize → Plugins → **Add marketplace** → `StanMurzin/realplus-plugins` → install **realplus**.
+
+Claude Code and Claude Desktop need Node.js 20+ (`node --version`).
 
 ## First question
 
