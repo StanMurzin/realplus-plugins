@@ -1,13 +1,13 @@
 {
   "name": "realplus",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Ask RealPlus New York real estate questions; Codex queries the Snowflake semantic view REALPLUS_BUSINESS.",
   "author": { "name": "Stanislav Murzin" },
   "homepage": "https://github.com/StanMurzin/realplus-codex",
   "repository": "https://github.com/StanMurzin/realplus-codex",
   "license": "MIT",
   "keywords": ["realplus", "snowflake", "real estate", "semantic view", "mcp"],
-  "mcpServers": "./.mcp.json",
+  "mcpServers": "./codex.mcp.json",
   "skills": "./skills/",
   "interface": {
     "displayName": "RealPlus",

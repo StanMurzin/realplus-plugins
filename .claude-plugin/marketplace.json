@@ -1,0 +1,16 @@
+{
+  "name": "realplus",
+  "owner": { "name": "Stanislav Murzin" },
+  "metadata": {
+    "description": "RealPlus New York real estate data from Snowflake for Claude Code and Codex"
+  },
+  "plugins": [
+    {
+      "name": "realplus",
+      "source": "./plugins/realplus",
+      "description": "Ask RealPlus real estate questions; Claude queries the Snowflake semantic view REALPLUS_BUSINESS.",
+      "version": "1.1.0",
+      "category": "data"
+    }
+  ]
+}

@@ -1,31 +1,44 @@
-# RealPlus for Codex
+# RealPlus plugin for Codex and Claude Code
 
-A Codex plugin that answers questions about RealPlus New York real estate data (listings, asking and closing prices,
-rents, closed deals, price cuts, agents, brokerages, customer portal activity, searches). Codex runs read-only SQL over
-the Snowflake semantic view `REALPLUS.GOLD.REALPLUS_BUSINESS` and follows the RealPlus answer rules shipped with the
-plugin as a skill.
+One plugin, two apps. It answers questions about RealPlus New York real estate data (listings, asking and closing
+prices, rents, closed deals, price cuts, agents, brokerages, customer portal activity, searches): the assistant runs
+read-only SQL over the Snowflake semantic view `REALPLUS.GOLD.REALPLUS_BUSINESS` and follows the RealPlus answer rules
+shipped with the plugin as a skill.
 
 You need a Snowflake user for the RealPlus account; without one the plugin can't read anything.
 
-## Install
+## Install in Codex
 
 ```
 codex plugin marketplace add StanMurzin/realplus-codex
 codex plugin add realplus@realplus
 ```
 
-Or in the Codex app: Plugins → add the marketplace `StanMurzin/realplus-codex` → install **RealPlus**.
+Or in the Codex app: Plugins → **Add a marketplace** → Source `StanMurzin/realplus-codex` → install **RealPlus**.
+Node.js is not needed: the plugin uses the Node that comes with Codex. Windows only for now.
 
-Restart Codex, then ask, for example: *How many sales and rentals are on the market?* The first time, a browser window
-opens: sign in with your Snowflake user. You stay signed in for 90 days.
+## Install in Claude Code (terminal, VS Code, Claude Desktop's Code tab)
 
-Windows only for now. Node.js is not needed: the plugin uses the Node that comes with Codex.
+```
+/plugin marketplace add StanMurzin/realplus-codex
+/plugin install realplus@realplus
+```
+
+Needs Node.js 20+ (`node --version`). For the Claude Desktop chat (not the Code tab) use the `realplus.mcpb`
+extension instead.
+
+## First question
+
+Restart the app, then ask, for example: *How many sales and rentals are on the market?* The first time, a browser
+window opens: sign in with your Snowflake user. You stay signed in for 90 days.
 
 ## Update / remove
 
 ```
-codex plugin marketplace upgrade realplus
+codex plugin marketplace upgrade realplus          # Codex
 codex plugin remove realplus@realplus
+/plugin marketplace update realplus                # Claude Code
+/plugin uninstall realplus@realplus
 ```
 
 ## Troubleshooting
