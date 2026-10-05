@@ -20,6 +20,9 @@ The Snowflake agent answers in about 20 s with 1-2 SQL calls. Do the same:
   not write notes or memory, do not run shell commands. Everything you need is in this file.
 - Pick metric and dimension names from the **Name index** below and write ONE SEMANTIC_VIEW() query that returns
   every figure the answer needs (several metrics and dimensions in one call). No `SHOW` / `DESCRIBE` first.
+- Collaboration data (collaboration_activity) ends 2026-06-15; rows after it are test activity. Always add
+  `WHERE collaboration_activity.activity_date <= '2026-06-15'` - grouping or filtering by month is not enough
+  (June 2026 holds test rows from 06-16 on). Call June 2026 "June 1-15".
 - Make a second call only if the first fails or comes back empty; then fix that one thing. Open
   references/catalog.md only for a name that is not in the index or whose meaning is unclear.
 - No narration between calls. After the last call write the answer once, by the response rules below: the
