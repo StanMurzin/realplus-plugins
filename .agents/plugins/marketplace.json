@@ -1,0 +1,20 @@
+{
+  "name": "realplus",
+  "interface": {
+    "displayName": "RealPlus"
+  },
+  "plugins": [
+    {
+      "name": "realplus",
+      "source": {
+        "source": "local",
+        "path": "./plugins/realplus"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data & Analytics"
+    }
+  ]
+}

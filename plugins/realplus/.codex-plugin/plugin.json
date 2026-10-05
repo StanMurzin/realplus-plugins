@@ -1,0 +1,24 @@
+{
+  "name": "realplus",
+  "version": "1.0.0",
+  "description": "Ask RealPlus New York real estate questions; Codex queries the Snowflake semantic view REALPLUS_BUSINESS.",
+  "author": { "name": "Stanislav Murzin" },
+  "homepage": "https://github.com/StanMurzin/realplus-codex",
+  "repository": "https://github.com/StanMurzin/realplus-codex",
+  "license": "MIT",
+  "keywords": ["realplus", "snowflake", "real estate", "semantic view", "mcp"],
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "RealPlus",
+    "shortDescription": "RealPlus real estate data from Snowflake",
+    "longDescription": "Answers questions about New York listings, asking and closing prices, rents, closed deals, price cuts, agents, brokerages, customer portal activity and searches by running read-only SQL over the Snowflake semantic view REALPLUS.GOLD.REALPLUS_BUSINESS. On first use a browser window opens: sign in with the Snowflake user you were given.",
+    "developerName": "Stanislav Murzin",
+    "category": "Data & Analytics",
+    "capabilities": ["Read"],
+    "defaultPrompt": [
+      "How many sales and rentals are on the market?",
+      "How many sales closed per month in 2025 and at what median price?"
+    ]
+  }
+}
