@@ -76,16 +76,16 @@ The Snowflake agent answers in about 20 s with 1-2 SQL calls. Do the same:
 
 | table | base view (REALPLUS.GOLD) | what |
 |---|---|---|
-| `agents` | `GOLD_DIM_AGENT_CURRENT` | One row per real estate agent with the primary office and brokerage company. |
-| `agent_activity` | `GOLD_REPORT_AGENT_ENGAGEMENT_MONTHLY` | Per agent and month: listings picked, emailed and shown to customers, customer likes and dislikes, appointments, messages. |
-| `agent_collaborations` | `GOLD_REPORT_AGENT_COLLABORATION_SUMMARY` | Per agent, current state as of the 2026-06-15 source copy: customer collaborations, customers, portal access, invitations, comments and appointments.  |
-| `collaboration_activity` | `GOLD_REPORT_COLLABORATION_ACTIVITY_DAILY` | Customer collaboration activity per day: invitations sent, accepted, revoked; comments, notes and external listings added. Real activity ends 2026-06- |
-| `customer_activity` | `GOLD_REPORT_CUSTOMER_ACTIVITY_DAILY` | Portfolio actions per day: listings emailed, picked, liked, disliked, shown, appointments, messages and undo actions, by who did them. |
-| `listings` | `GOLD_REPORT_LISTING_DETAIL` | One row per real estate listing in New York (sale or rental) with location, size, status, prices, monthly charges and dates. Listings deleted in the s |
-| `listing_engagement` | `GOLD_REPORT_LISTING_ENGAGEMENT_DAILY` | What customers did with each listing per day in the customer portal (CCP): views, shares, likes, comments, appointment requests. |
-| `price_changes` | `GOLD_REPORT_LISTING_PRICE_HISTORY` | One row per recorded price, rent, maintenance or tax change of a listing, with the amount before and after. The source logs only a small share of chan |
-| `search_demand` | `GOLD_REPORT_SEARCH_DEMAND_MONTHLY` | Listing searches per month by product, company, sale or rental, price filter and price band, including searches with zero results. |
-| `status_changes` | `GOLD_FACT_LISTING_STATUS_TRANSITION` | One row per real status change of a listing (new, active, in contract, closed, off market) with the days spent in the previous status. |
+| `agents` | `AGENTS` | One row per real estate agent with the primary office and brokerage company. |
+| `agent_activity` | `AGENT_ACTIVITY` | Per agent and month: listings picked, emailed and shown to customers, customer likes and dislikes, appointments, messages. |
+| `agent_collaborations` | `AGENT_COLLABORATIONS` | Per agent, current state as of the 2026-06-15 source copy: customer collaborations, customers, portal access, invitations, comments and appointments.  |
+| `collaboration_activity` | `COLLABORATION_ACTIVITY` | Customer collaboration activity per day: invitations sent, accepted, revoked; comments, notes and external listings added. Real activity ends 2026-06- |
+| `customer_activity` | `CUSTOMER_ACTIVITY` | Portfolio actions per day: listings emailed, picked, liked, disliked, shown, appointments, messages and undo actions, by who did them. |
+| `listings` | `LISTINGS` | One row per real estate listing in New York (sale or rental) with location, size, status, prices, monthly charges and dates. Listings deleted in the s |
+| `listing_engagement` | `LISTING_ENGAGEMENT` | What customers did with each listing per day in the customer portal (CCP): views, shares, likes, comments, appointment requests. |
+| `price_changes` | `PRICE_CHANGES` | One row per recorded price, rent, maintenance or tax change of a listing, with the amount before and after. The source logs only a small share of chan |
+| `search_demand` | `SEARCH_DEMAND` | Listing searches per month by product, company, sale or rental, price filter and price band, including searches with zero results. |
+| `status_changes` | `STATUS_CHANGES` | One row per real status change of a listing (new, active, in contract, closed, off market) with the days spent in the previous status. |
 
 ## Semantic view instructions (AI_SQL_GENERATION)
 
