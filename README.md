@@ -1,7 +1,8 @@
 # RealPlus plugin for Codex and Claude Code
 
 One plugin, two apps. It answers questions about RealPlus New York real estate data (listings, asking and closing
-prices, rents, closed deals, price cuts, agents, brokerages, customer portal activity, searches): the assistant runs
+prices, rents, closed deals, price cuts, agents, brokerages, customer portal activity, searches, listings near
+subway stations, courthouses, schools, parks, grocery stores, cafes and gyms): the assistant runs
 read-only SQL over the Snowflake semantic view `REALPLUS.GOLD.REALPLUS_BUSINESS` and follows the RealPlus answer rules
 shipped with the plugin as a skill.
 
@@ -34,7 +35,8 @@ Claude Code and Claude Desktop need Node.js 20+ (`node --version`).
 
 ## First question
 
-Restart the app, then ask, for example: *How many sales and rentals are on the market?* The first time, a browser
+Restart the app, then ask, for example: *How many sales and rentals are on the market?* or *Show the 10 most
+expensive sales near the Brooklyn Supreme Court*. The first time, a browser
 window opens: sign in with your Snowflake user. You stay signed in for 90 days.
 
 ## Update / remove

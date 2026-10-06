@@ -335,6 +335,129 @@ Primary key: ["ACTIVITY_DATE","LISTING_ID"]
 - `portal_views` — Listing views in the customer portal. Synonyms: views, page views.  
   expr: `sum(VIEWS)`
 
+## listing_locations  →  `REALPLUS.SEMANTIC.LISTING_LOCATIONS`
+
+One row per listing (all listings): NYC neighborhood tabulation area (NTA), zoned elementary, middle and high school, historic district, nearest subway station within 1 km with routes and walking minutes, subway stations within 800 m, nearest park within 500 m. From NYC open data; straight-line distances. Synonyms: listing location, nearest subway, school zone, zoned school, historic district.
+Primary key: ["LISTING_ID"]
+
+**dimensions**
+
+- `elementary_school_zone_dbn` — DOE code (DBN) of the zoned elementary school, for example 03M199.  
+  expr: `ELEMENTARY_SCHOOL_ZONE_DBN`
+- `elementary_school_zone_name` — Public elementary school the building is zoned for (DOE school zones 2024-2025), for example P.S. 199 Jessie Isador Straus. Match with ILIKE. Synonyms: zoned elementary school, elementary school zone, PS zone, school zone.  
+  expr: `ELEMENTARY_SCHOOL_ZONE_NAME`
+- `high_school_zone_name` — Zoned high school, or Citywide High School Choice where there is no zone.  
+  expr: `HIGH_SCHOOL_ZONE_NAME`
+- `historic_district` — NYC Landmarks historic district the building is in, for example Brooklyn Heights Historic District; empty when none.  
+  expr: `HISTORIC_DISTRICT`
+- `is_in_historic_district` — True when the building is in a historic district.  
+  expr: `IS_IN_HISTORIC_DISTRICT`
+- `listing_id` — Listing identifier (joins to listings).  
+  expr: `LISTING_ID`
+- `middle_school_zone_name` — Public middle school the building is zoned for; many districts have no middle school zones. Synonyms: zoned middle school, middle school zone.  
+  expr: `MIDDLE_SCHOOL_ZONE_NAME`
+- `nearest_park` — Nearest park within 500 m; empty when none.  
+  expr: `NEAREST_PARK`
+- `nearest_subway_routes` — Daytime routes at the nearest station, for example A C E.  
+  expr: `NEAREST_SUBWAY_ROUTES`
+- `nearest_subway_station` — Nearest subway station within 1 km; empty when none (mostly Staten Island and eastern Queens). Synonyms: closest subway, nearest train station, metro.  
+  expr: `NEAREST_SUBWAY_STATION`
+- `nearest_subway_walk_minutes` — Walking minutes to the nearest subway station (straight line at 80 m per minute); empty beyond 1 km. Synonyms: minutes to subway, walk to subway.  
+  expr: `NEAREST_SUBWAY_WALK_MINUTES`
+- `nta_name` — NYC 2020 Neighborhood Tabulation Area of the building, for example Upper West Side-Lincoln Square. Prefer listings.neighborhood for neighborhoods; use this for official city areas. Synonyms: NTA, neighborhood tabulation area.  
+  expr: `NTA_NAME`
+- `subway_stations_within_800m` — Distinct subway stations within 800 m (about 10 minutes walk).  
+  expr: `SUBWAY_STATIONS_WITHIN_800M`
+
+**facts**
+
+- `nearest_park_distance_m` — Straight-line meters to the edge of the nearest park; empty when none within 500 m.  
+  expr: `NEAREST_PARK_DISTANCE_M`
+- `nearest_subway_distance_m` — Straight-line meters to the nearest subway station; empty when none within 1 km.  
+  expr: `NEAREST_SUBWAY_DISTANCE_M`
+
+**metrics**
+
+- `median_subway_walk_minutes` — Median walking minutes to the nearest subway station (listings with a station within 1 km).  
+  expr: `median(NEAREST_SUBWAY_WALK_MINUTES)`
+
+## nearby_places  →  `REALPLUS.SEMANTIC.LISTING_NEARBY_POI`
+
+One row per listing and place near its building, within the radius of the place category: subway stations, courthouses, hospitals, ferries 1 km; colleges, libraries, museums, police stations 800 m; schools, theaters, fire stations, gyms, parks (to the park edge) 500 m; daycare / pre-K, Citi Bike stations, grocery stores, pharmacies, cafes 300 m. Straight-line distance. Covers listings on the market plus those listed or closed since 2024-01-01. Synonyms: near, nearby, close to, next to, walking distance, around.
+Primary key: ["LISTING_ID","POI_ID"]
+
+**dimensions**
+
+- `is_nearest_of_category` — True for the nearest place of its category to the listing.  
+  expr: `IS_NEAREST_OF_CATEGORY`
+- `listing_id` — Listing identifier (joins to listings).  
+  expr: `LISTING_ID`
+- `place_address` — Address of the place, when the source has one.  
+  expr: `POI_ADDRESS`
+- `place_category` — Courthouse, Subway station, School, College / university, Daycare / pre-K, Library, Hospital, Museum, Theater, Police station, Fire station, Ferry, Park, Citi Bike station, Grocery store, Pharmacy, Cafe, Gym. Synonyms: type of place, amenity.  
+  expr: `POI_CATEGORY`
+- `place_name` — Name of the place as the source writes it; match with ILIKE, for example Supreme And Surrogate Court (Brooklyn, 360 Adams Street), Bedford Av, Whole Foods Market. Synonyms: place, station name, court name, school name, store name.  
+  expr: `POI_NAME`
+- `poi_id` — Place identifier (joins to places).  
+  expr: `POI_ID`
+- `subway_routes` — Daytime routes of a subway station, for example L or 4 5 6.  
+  expr: `SUBWAY_ROUTES`
+- `walk_minutes` — Walking minutes from the listing to the place (straight line at 80 m per minute). Synonyms: minutes walk, walking time.  
+  expr: `WALK_MINUTES`
+
+**facts**
+
+- `distance_m` — Straight-line meters from the listing building to the place (to the edge for parks). Synonyms: distance, how far.  
+  expr: `DISTANCE_M`
+
+**metrics**
+
+- `median_distance_m` — Median straight-line distance in meters.  
+  expr: `median(DISTANCE_M)`
+- `nearby_active_listings` — Distinct listings on the market today near the places in the filter.  
+  expr: `count(distinct case when IS_ON_MARKET then LISTING_ID end)`
+- `nearby_closed_deals` — Distinct closed listings near the places in the filter (closed since 2024-01-01).  
+  expr: `count(distinct case when STATUS = 'Closed' then LISTING_ID end)`
+- `nearby_listings` — Distinct listings near the places in the filter. Synonyms: listings near, apartments near, how many listings near.  
+  expr: `count(distinct LISTING_ID)`
+- `nearby_median_asking_price` — Median asking price of listings on the market near the place (monthly rent for rentals). Filter to one place or to is_nearest_of_category, otherwise a listing counts once per matching place. Always split by listing_type.  
+  expr: `median(case when IS_ON_MARKET and ((LISTING_TYPE = 'Rental' and ASKING_PRICE between 500 and 100000) or (LISTING_TYPE = 'Sale' and ASKING_PRICE between 10000 and 200000000)) then ASKING_PRICE end)`
+- `nearby_median_closing_price` — Median closing price of market deals near the place (monthly rent for rentals). Filter to one place or to is_nearest_of_category. Always split by listing_type.  
+  expr: `median(case when STATUS = 'Closed' and CLOSING_PRICE > 0 and not IS_NON_MARKET_SALE and not IS_BULK_BUILDING_SALE then CLOSING_PRICE end)`
+
+## places  →  `REALPLUS.SEMANTIC.NYC_POIS`
+
+One row per place or area in New York City: courthouses, schools, subway stations, libraries, hospitals, museums, parks, landmarks, historic districts, school zones, neighborhoods (NYC open data) and businesses - shops, cafes, gyms, restaurants (Overture Maps, © Overture Maps Foundation). Synonyms: points of interest, POI, amenities, landmarks, businesses.
+Primary key: ["POI_ID"]
+
+**dimensions**
+
+- `borough` — Borough of the place (points only).  
+  expr: `BOROUGH`
+- `is_matched_to_listings` — True for the categories in nearby_places.  
+  expr: `IS_MATCHED_TO_LISTINGS`
+- `nta_name` — Neighborhood tabulation area of the place (points only).  
+  expr: `NTA_NAME`
+- `place_address` — Address or description of the place.  
+  expr: `POI_ADDRESS`
+- `place_category` — Category: Courthouse, School, Subway station, Library, Hospital, Museum, Park, Grocery store, Cafe, Gym, Restaurant, Pizza Restaurant, ..., Elementary school zone, Historic district, Neighborhood (NTA).  
+  expr: `POI_CATEGORY`
+- `place_kind` — Point (a building or station) or Area (park, school zone, historic district, neighborhood).  
+  expr: `POI_KIND`
+- `place_name` — Name of the place; match with ILIKE.  
+  expr: `POI_NAME`
+- `place_source_type` — Type in the source classification, for example COURTHOUSE, ELEMENTARY SCHOOL - PUBLIC, grocery_store.  
+  expr: `SOURCE_TYPE`
+- `poi_id` — Place identifier.  
+  expr: `POI_ID`
+- `source_dataset` — facilities, subway_stations, commonplace, overture_places (© Overture Maps Foundation), parks_properties, ...  
+  expr: `SOURCE_DATASET`
+
+**metrics**
+
+- `place_count` — Number of places. Synonyms: number of places.  
+  expr: `count(POI_ID)`
+
 ## price_changes  →  `REALPLUS.SEMANTIC.PRICE_CHANGES`
 
 One row per recorded price, rent, maintenance or tax change of a listing, with the amount before and after. The source logs only a small share of changes (about 1,000 real cuts a year since 2024, ending 2026-06-15), so counts are a lower bound, not the whole market. Synonyms: price history, price drops, price cuts, price reductions, rent changes.
@@ -448,6 +571,9 @@ Primary key: ["LISTING_ID","TRANSITION_SEQUENCE"]
 
 ## Relationships
 
+- ?(?) → ?(?)
+- ?(?) → ?(?)
+- ?(?) → ?(?)
 - ?(?) → ?(?)
 - ?(?) → ?(?)
 - ?(?) → ?(?)

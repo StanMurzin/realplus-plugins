@@ -9,7 +9,7 @@
       "name": "realplus",
       "source": "./plugins/realplus",
       "description": "Ask RealPlus real estate questions; Claude queries the Snowflake semantic view REALPLUS_BUSINESS.",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "category": "data"
     }
   ]

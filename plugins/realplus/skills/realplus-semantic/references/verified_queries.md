@@ -51,3 +51,27 @@ Q: Which listings were viewed most in the customer portal?
 ```sql
 SELECT l.listing_id, l.address, l.unit, l.neighborhood, l.listing_type, SUM(e.views) AS portal_views FROM listing_engagement AS e LEFT JOIN listings AS l ON e.listing_id = l.listing_id GROUP BY l.listing_id, l.address, l.unit, l.neighborhood, l.listing_type ORDER BY portal_views DESC LIMIT 20
 ```
+
+## top_sales_near_brooklyn_supreme_court
+
+Q: Show the 10 most expensive sales on the market near the Brooklyn Supreme Court
+
+```sql
+SELECT l.address, l.unit, l.neighborhood, l.bedrooms, MAX(l.asking_price) AS asking_price, MIN(n.place_name) AS place_name, MIN(n.distance_m) AS distance_m, MIN(n.walk_minutes) AS walk_minutes FROM nearby_places AS n JOIN listings AS l ON n.listing_id = l.listing_id WHERE n.place_category = 'Courthouse' AND n.place_name ILIKE '%Supreme And Surrogate%' AND l.is_on_market AND l.listing_type = 'Sale' AND l.asking_price BETWEEN 10000 AND 200000000 GROUP BY l.address, l.unit, l.neighborhood, l.bedrooms ORDER BY asking_price DESC LIMIT 10
+```
+
+## rent_by_subway_walk_brooklyn
+
+Q: What is the median asking rent for 2BR in Brooklyn within 5 minutes walk of the subway versus farther?
+
+```sql
+SELECT CASE WHEN ll.nearest_subway_walk_minutes <= 5 THEN '5 min or less' ELSE 'more than 5 min or no station within 1 km' END AS subway_walk, COUNT(*) AS active_listings, MEDIAN(l.asking_price) AS median_asking_rent FROM listings AS l JOIN listing_locations AS ll ON l.listing_id = ll.listing_id WHERE l.is_on_market AND l.listing_type = 'Rental' AND l.bedrooms = 2 AND l.borough = 'Brooklyn' AND l.asking_price BETWEEN 500 AND 100000 GROUP BY subway_walk ORDER BY subway_walk
+```
+
+## closed_sales_near_subway_station
+
+Q: How many sales closed in 2025 within 10 minutes walk of the Bedford Av station and at what median price?
+
+```sql
+SELECT COUNT(DISTINCT n.listing_id) AS closed_deals, MEDIAN(CASE WHEN l.closing_price > 0 AND NOT l.is_non_market_sale AND NOT l.is_bulk_building_sale THEN l.closing_price END) AS median_closing_price FROM nearby_places AS n JOIN listings AS l ON n.listing_id = l.listing_id WHERE n.place_category = 'Subway station' AND n.place_name ILIKE 'Bedford Av%' AND n.walk_minutes <= 10 AND l.status = 'Closed' AND l.listing_type = 'Sale' AND l.closing_year = 2025
+```
