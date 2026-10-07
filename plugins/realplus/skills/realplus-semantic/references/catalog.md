@@ -430,8 +430,12 @@ Primary key: ["POI_ID"]
 
 **dimensions**
 
-- `borough` — Borough of the place.  
+- `borough` — Borough of the place; empty for places outside New York City (New Jersey, Long Island).  
   expr: `BOROUGH`
+- `latitude` — Latitude of the place (center of an area).  
+  expr: `LATITUDE`
+- `longitude` — Longitude of the place (center of an area).  
+  expr: `LONGITUDE`
 - `nta_name` — NTA of the place.  
   expr: `NTA_NAME`
 - `place_address` — Address of the place.  

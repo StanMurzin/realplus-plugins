@@ -75,3 +75,11 @@ Q: How many sales closed in 2025 within 10 minutes walk of the Bedford Av statio
 ```sql
 SELECT COUNT(DISTINCT n.listing_id) AS closed_deals, MEDIAN(CASE WHEN l.closing_price > 0 AND NOT l.is_non_market_sale AND NOT l.is_bulk_building_sale THEN l.closing_price END) AS median_closing_price FROM nearby_places AS n JOIN listings AS l ON n.listing_id = l.listing_id WHERE n.place_category = 'Subway station' AND n.place_name ILIKE 'Bedford Av%' AND n.walk_minutes <= 10 AND l.status = 'Closed' AND l.listing_type = 'Sale' AND l.closing_year = 2025
 ```
+
+## rent_near_place_by_coordinates
+
+Q: What is the median asking rent by bedrooms within 1 km of the Dollar Tree on Knickerbocker Ave in Brooklyn?
+
+```sql
+SELECT l.bedroom_band, COUNT(*) AS active_listings, MEDIAN(l.asking_price) AS median_asking_rent FROM listings AS l CROSS JOIN (SELECT latitude, longitude FROM places WHERE place_name ILIKE '%Dollar Tree%' AND place_address ILIKE '%Knickerbocker%' AND borough = 'Brooklyn') AS p WHERE l.is_on_market AND l.listing_type = 'Rental' AND l.asking_price BETWEEN 500 AND 100000 AND HAVERSINE(p.latitude, p.longitude, l.latitude, l.longitude) <= 1 GROUP BY l.bedroom_band ORDER BY l.bedroom_band
+```
