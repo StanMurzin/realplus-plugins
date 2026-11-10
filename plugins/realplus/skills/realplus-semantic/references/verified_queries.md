@@ -107,3 +107,19 @@ Q: Which listings on the market have the most interested buyers?
 ```sql
 SELECT l.address, l.unit, l.neighborhood, l.listing_type, l.asking_price, b.interested_buyers, b.buyers_with_action, b.buyers_saved_search_match FROM buyer_interest AS b JOIN listings AS l ON b.listing_id = l.listing_id WHERE l.is_on_market AND b.interested_buyers > 0 ORDER BY b.interested_buyers DESC LIMIT 20
 ```
+
+## rentals_with_terrace_by_borough
+
+Q: How many rentals on the market have a terrace or balcony, by borough, and what share of described rentals is that?
+
+```sql
+SELECT l.borough, COUNT(DISTINCT CASE WHEN f.outdoor_space IN ('terrace', 'balcony') THEN f.listing_id END) AS rentals_with_terrace_or_balcony, COUNT(DISTINCT f.listing_id) AS listings_with_features, ROUND(100.0 * COUNT(DISTINCT CASE WHEN f.outdoor_space IN ('terrace', 'balcony') THEN f.listing_id END) / NULLIF(COUNT(DISTINCT f.listing_id), 0), 1) AS share_pct FROM listing_features AS f JOIN listings AS l ON f.listing_id = l.listing_id WHERE l.is_on_market AND l.listing_type = 'Rental' GROUP BY l.borough ORDER BY rentals_with_terrace_or_balcony DESC
+```
+
+## doorman_two_bedroom_sales_with_quote
+
+Q: Show 2-bedroom sales on the market in full-time doorman buildings with in-unit washer/dryer in Manhattan.
+
+```sql
+SELECT l.listing_id, l.address, l.unit, l.neighborhood, l.asking_price, f.doorman_quote, f.washer_dryer_quote FROM listing_features AS f JOIN listings AS l ON f.listing_id = l.listing_id WHERE l.is_on_market AND l.listing_type = 'Sale' AND l.borough = 'Manhattan' AND l.bedrooms = 2 AND f.doorman = 'full-time doorman' AND f.washer_dryer = 'in unit' ORDER BY l.asking_price LIMIT 20
+```
