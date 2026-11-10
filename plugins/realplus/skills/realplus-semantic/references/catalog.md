@@ -293,7 +293,7 @@ Primary key: ["LISTING_ID"]
   expr: `date_trunc('month', LIST_DATE)`
 - `longitude` — Longitude.  
   expr: `LONGITUDE`
-- `neighborhood` — Neighborhood, for example Upper West Side (UWS), Chelsea, Williamsburg. Synonyms: area, district.  
+- `neighborhood` — Neighborhood, source name. Some everyday areas span several values: Williamsburg = Williamsburg, North side + Williamsburg, South side + East Williamsburg; Upper East Side = Upper East Side (UES) + Lenox Hill + Yorkville + Carnegie Hill + Upper Fifth; Upper West Side = Upper West Side (UWS) + Lincoln Square + Manhattan Valley; Bed-Stuy = Bedford - Stuyvesant + Stuyvesant Heights; Harlem = Central Harlem + South Harlem + East Harlem + West Harlem; Long Island City = Long Island City (LIC) + Hunters Point; Midtown = Midtown + Midtown East + Turtle Bay + Sutton Place + Beekman; also Greenwich Village (GV), Fulton/Seaport, Stuyvesant Town/PCV. Synonyms: area, district.  
   expr: `NEIGHBORHOOD`
 - `ownership_type` — Source ownership type code (24, 25, 26, 27, 225); use ownership_type_name.  
   expr: `OWNERSHIP_TYPE`
