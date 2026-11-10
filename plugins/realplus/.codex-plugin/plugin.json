@@ -1,6 +1,6 @@
 {
   "name": "realplus",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Ask RealPlus New York real estate questions; Codex queries the Snowflake semantic view REALPLUS_BUSINESS and searches listing descriptions.",
   "author": { "name": "Stanislav Murzin" },
   "homepage": "https://github.com/StanMurzin/realplus-plugins",

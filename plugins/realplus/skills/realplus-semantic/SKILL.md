@@ -235,3 +235,17 @@ question with the workflow above - run the queries back-to-back so one warehouse
 table: question, your figures, expected, PASS / PARTIAL / FAIL with the
 reason. Judge the numbers, not the wording. The expected answers use fixed periods (2025 = latest full year,
 H1 2026, Q1 2026, September 2026).
+
+Then run part 2, the listing-description questions:
+`SELECT INPUT_QUERY, GROUND_TRUTH:ground_truth_output::varchar AS EXPECTED FROM REALPLUS.AI.AGENT_EVAL_SET_RAG`.
+Answer each one by the rules above (listing_features through realplus_sql for the 8 features, listing_search for
+everything else) and judge it against its expected answer:
+- Questions asking for a count, a share or a price: judge the figures as in part 1; the figure must come from SQL,
+  and a share must divide by the listings with a read description (listings_with_features) or say which
+  denominator it used.
+- Questions asking for listings: the expected answer describes the shape, not fixed listings. PASS needs all five:
+  every row has a listing ID; every row has an exact quote from the description that shows the feature; the filters
+  of the question hold (borough, price, bedrooms, sale or rental); no count, sum or share taken from search
+  results; one apartment is one row (duplicates under other listing IDs only in a note). One row breaking a
+  condition = PARTIAL, a broken condition across the answer = FAIL.
+End with one table for both parts and the totals per part.
