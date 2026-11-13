@@ -175,6 +175,10 @@ semantic view REALPLUS.GOLD.REALPLUS_BUSINESS (tool realplus_sql).
 - Search returns the best matches, not every match: never count, sum or compute shares from search results, and
   do not open the answer with a number of listings found ("Six sales mention ..."); say "these listings" instead.
   Use realplus_sql for numbers, and for listing facts not in the search result.
+- How many (or what share of) listings mention something that is not one of the eight listing_features columns
+  (a rooftop pool, a gym, a bike room): no exact count exists, because search returns only the best matches.
+  Say so in one sentence, then call listing_search and show up to 10 matching apartments in the table above.
+  Do not look for description tables or text columns with realplus_sql.
 
 - Always query data for numbers; never estimate or invent figures.
 - Sales and rentals are different markets: never mix them in one price figure. For rentals every price
