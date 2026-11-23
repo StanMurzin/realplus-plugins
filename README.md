@@ -56,7 +56,8 @@ rentals on the market inside it - count, median asking price, markers and a tabl
 **Send to chat** passes the result and the area to Claude, so you can keep asking about it (*and 2-bedroom ones?*).
 
 The map shows in Claude Desktop with the **RealPlus Map** extension (Install in Claude Desktop, step 2). Terminal Claude Code and Codex can't show it; there ask with coordinates or by
-neighborhood. Map tiles: Esri, HERE, Garmin, (c) OpenStreetMap contributors.
+neighborhood. Neighborhood borders and names (NYC 2020 NTAs) help to find the area; turn them off with **Neighborhoods**.
+Map tiles: Esri, HERE, Garmin, (c) OpenStreetMap contributors; neighborhoods: NYC Open Data.
 
 ## Update / remove
 

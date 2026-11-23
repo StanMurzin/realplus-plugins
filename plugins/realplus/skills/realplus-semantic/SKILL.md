@@ -85,10 +85,13 @@ incomes, rent burden, evictions, definitions (NOI, LTV, DSCR, 421-a). Never for 
 For an area the user wants to draw or outline ("show on a map", "I'll draw the area", "these blocks", "inside this
 shape"). Both tools come from the plugin's local bridge (no AI credits; one plain SQL per search).
 
-- `search_area_on_map` opens an interactive map in the chat (Claude Desktop / claude.ai only; optional
-  `listing_type` Sale / Rental / Both and `borough` to center it). The user draws the area and the widget runs the
-  search itself. Then stop and wait: the result comes back as the user's next message (counts, medians and the
-  polygon WKT). Never invent an area.
+- `search_area_on_map` opens an interactive map in the chat. It comes from the Claude Desktop extension
+  **RealPlus Map**, not from this plugin (optional `listing_type` Sale / Rental / Both and `borough` to center it).
+  The user draws the area and the widget runs the search itself. Then stop and wait: the result comes back as the
+  user's next message (counts, medians and the polygon WKT). Never invent an area.
+- No `search_area_on_map` tool in the list: say the map needs the RealPlus Map extension for Claude Desktop
+  (https://github.com/StanMurzin/realplus-plugins/releases/latest/download/realplus-map.mcpb, Settings -> Extensions
+  -> Install Extension) and offer to search by neighborhood names or coordinates instead.
 - `listings_in_area` takes `polygon` = `[[longitude, latitude], ...]` (3-200 corners) and returns counts and median
   asking price per listing type plus up to 500 listings. Use it when the user gives the area as coordinates, or in
   apps without the map (terminal Claude Code, Codex). Longitude first; New York longitudes are about -74.

@@ -97424,7 +97424,8 @@ function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-ma
     if (p.method === "initialize") {
       message.result.capabilities = { ...message.result.capabilities || {}, resources: { ...message.result.capabilities?.resources || {} } };
     } else if (p.method === "tools/list") {
-      message.result.tools = process.env.REALPLUS_MAP_ONLY === "1" ? [...TOOLS] : [...message.result.tools || [], ...TOOLS];
+      const [mapTool, areaTool] = TOOLS;
+      message.result.tools = process.env.REALPLUS_MAP_ONLY === "1" ? [mapTool, { ...areaTool, _meta: { ui: { visibility: ["app"] } } }] : [...message.result.tools || [], areaTool];
     } else if (p.method === "listings_in_area") {
       const text = message.result.content?.[0]?.text;
       if (message.result.isError || !text) return message;
