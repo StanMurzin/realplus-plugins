@@ -30,9 +30,17 @@ Or type `/plugin` → Marketplaces → Add Marketplace → `StanMurzin/realplus-
 
 ## Install in Claude Desktop
 
-Customize → Plugins → **Add marketplace** → `StanMurzin/realplus-plugins` → install **realplus**.
+1. **Plugin** (data and answer rules): Settings → Plugins → **Add marketplace** → `StanMurzin/realplus-plugins` →
+   install **realplus**. Needs Node.js 20+ (`node --version`; install: `winget install -e --id OpenJS.NodeJS.LTS`).
+2. **Map** (optional, draw an area in the chat): download
+   [realplus-map.mcpb](https://github.com/StanMurzin/realplus-plugins/releases/latest/download/realplus-map.mcpb),
+   then Settings → Extensions → Advanced settings → **Install Extension…** → pick the file. No Node.js needed.
+3. Quit Claude Desktop completely (tray icon → Quit) and start it again.
 
-Claude Code and Claude Desktop need Node.js 20+ (`node --version`).
+Why two parts: Claude Desktop passes plugin tools to the chat but not their interactive widgets, so the map comes as a
+desktop extension. It only adds the two map tools, so it does not duplicate the plugin.
+
+Claude Code needs Node.js 20+ as well.
 
 ## First question
 
@@ -47,7 +55,7 @@ click **Draw area**, click the corners of the area, then **Finish** (or click th
 rentals on the market inside it - count, median asking price, markers and a table (click a row to zoom to it).
 **Send to chat** passes the result and the area to Claude, so you can keep asking about it (*and 2-bedroom ones?*).
 
-The map shows in Claude Desktop. Terminal Claude Code and Codex can't show it; there ask with coordinates or by
+The map shows in Claude Desktop with the **RealPlus Map** extension (Install in Claude Desktop, step 2). Terminal Claude Code and Codex can't show it; there ask with coordinates or by
 neighborhood. Map tiles: Esri, HERE, Garmin, (c) OpenStreetMap contributors.
 
 ## Update / remove
@@ -63,6 +71,8 @@ codex plugin remove realplus@realplus
 
 - **Sign in as another user** (or after an expired session): delete the folder `.mcp-auth` in your home folder and
   restart Codex. The sign-in is shared by every app on the computer that uses this connection.
+- **No map in Claude Desktop**: check that RealPlus Map is installed and on (Settings → Extensions), then ask in a
+  new chat. Update the map: download the file again and install it over the old one.
 - **Port 33418 in use**: another app is signing in to the same server at that moment; finish or close it and retry.
 
 ## What's inside

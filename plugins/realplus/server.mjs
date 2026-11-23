@@ -34951,7 +34951,7 @@ var require_api_pipeline = __commonJS({
     var {
       Readable,
       Duplex,
-      PassThrough: PassThrough2
+      PassThrough
     } = __require("node:stream");
     var assert2 = __require("node:assert");
     var { AsyncResource } = __require("node:async_hooks");
@@ -35138,7 +35138,7 @@ var require_api_pipeline = __commonJS({
         this.dispatch({ ...opts, body: pipelineHandler.req }, pipelineHandler);
         return pipelineHandler.ret;
       } catch (err) {
-        return new PassThrough2().destroy(err);
+        return new PassThrough().destroy(err);
       }
     }
     module.exports = pipeline;
@@ -97185,7 +97185,6 @@ var config_default = {
 
 // ../codex_plugin/map_tools.mjs
 import { readFileSync } from "node:fs";
-import { PassThrough } from "node:stream";
 var MAP_URI = "ui://realplus/map.html";
 var MIME = "text/html;profile=mcp-app";
 var MAX_POINTS = 200;
@@ -97337,24 +97336,45 @@ function summaryText(res) {
 }
 function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-map] ${m}
 `) } = {}) {
-  const realStdin = process.stdin;
+  const stdin = process.stdin;
   const realWrite = process.stdout.write.bind(process.stdout);
   const toClient = (msg) => realWrite(JSON.stringify(msg) + "\n");
-  const clientIn = new PassThrough();
-  Object.defineProperty(process, "stdin", { value: clientIn, configurable: true, writable: true });
-  const pending = /* @__PURE__ */ new Map();
+  const downstream = [];
+  const clientIn = { write: (text) => {
+    const b = Buffer.from(text, "utf8");
+    for (const fn of downstream) fn(b);
+  } };
   let buf = "";
-  realStdin.setEncoding("utf8");
-  realStdin.on("data", (chunk) => {
-    buf += chunk;
+  let attached = false;
+  const realOn = stdin.on.bind(stdin);
+  const realOff = stdin.removeListener.bind(stdin);
+  function onData(chunk) {
+    buf += typeof chunk === "string" ? chunk : chunk.toString("utf8");
     let i;
     while ((i = buf.indexOf("\n")) >= 0) {
       const line = buf.slice(0, i);
       buf = buf.slice(i + 1);
       if (line.trim()) onClientLine(line);
     }
-  });
-  realStdin.on("end", () => clientIn.end());
+  }
+  const sub = (event, fn) => {
+    if (event !== "data") return null;
+    downstream.push(fn);
+    if (!attached) {
+      attached = true;
+      realOn("data", onData);
+    }
+    return stdin;
+  };
+  const unsub = (event, fn) => {
+    if (event !== "data") return null;
+    const k = downstream.indexOf(fn);
+    if (k >= 0) downstream.splice(k, 1);
+    return stdin;
+  };
+  stdin.on = stdin.addListener = (event, fn) => sub(event, fn) ?? realOn(event, fn);
+  stdin.off = stdin.removeListener = (event, fn) => unsub(event, fn) ?? realOff(event, fn);
+  const pending = /* @__PURE__ */ new Map();
   function onClientLine(line) {
     let m;
     try {
@@ -97404,7 +97424,7 @@ function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-ma
     if (p.method === "initialize") {
       message.result.capabilities = { ...message.result.capabilities || {}, resources: { ...message.result.capabilities?.resources || {} } };
     } else if (p.method === "tools/list") {
-      message.result.tools = [...message.result.tools || [], ...TOOLS];
+      message.result.tools = process.env.REALPLUS_MAP_ONLY === "1" ? [...TOOLS] : [...message.result.tools || [], ...TOOLS];
     } else if (p.method === "listings_in_area") {
       const text = message.result.content?.[0]?.text;
       if (message.result.isError || !text) return message;
