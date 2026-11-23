@@ -1,6 +1,6 @@
 ---
 name: realplus-semantic
-description: Answer RealPlus business questions (New York real estate - listings on the market, asking and closing prices, rents, closed deals, price cuts, status changes, agents, offices, brokerages like Corcoran / Douglas Elliman / Brown Harris Stevens, customer portal CCP views and likes, customer collaborations and invitations, listing searches, listings near places - subway stations, courthouses, schools, parks, grocery stores, cafes, gyms - zoned schools and historic districts, saved searches and their runs, new matches, portfolio folders and buyer interest in listings, and what listing descriptions say - terrace, balcony, views, washer/dryer, doorman, pets, fireplace, renovation, lofts, amenities, and NYC housing market context from public reports - vacancy rate, housing stock, new construction and permits, rent stabilization, multifamily mortgage rates and building sales, NOI, rent burden, evictions) by querying the Snowflake semantic view REALPLUS.GOLD.REALPLUS_BUSINESS directly through the realplus MCP tool realplus_sql, searching listing descriptions with the MCP tool listing_search and public NYC housing reports with the MCP tool market_report_search, following the rules of the Cortex Agent REALPLUS_BUSINESS - without paying Cortex AI credits. Also use it to run the agent eval set ("прогони eval", "self-test") or when the user mentions REALPLUS_BUSINESS, the RealPlus semantic view or the RealPlus agent.
+description: Answer RealPlus business questions (New York real estate - listings on the market, asking and closing prices, rents, closed deals, price cuts, status changes, agents, offices, brokerages like Corcoran / Douglas Elliman / Brown Harris Stevens, customer portal CCP views and likes, customer collaborations and invitations, listing searches, listings near places - subway stations, courthouses, schools, parks, grocery stores, cafes, gyms - zoned schools and historic districts, saved searches and their runs, new matches, portfolio folders and buyer interest in listings, and what listing descriptions say - terrace, balcony, views, washer/dryer, doorman, pets, fireplace, renovation, lofts, amenities, and NYC housing market context from public reports - vacancy rate, housing stock, new construction and permits, rent stabilization, multifamily mortgage rates and building sales, NOI, rent burden, evictions) by querying the Snowflake semantic view REALPLUS.GOLD.REALPLUS_BUSINESS directly through the realplus MCP tool realplus_sql, searching listing descriptions with the MCP tool listing_search and public NYC housing reports with the MCP tool market_report_search, finding on-market listings inside an area the user draws on a map (search_area_on_map, listings_in_area), following the rules of the Cortex Agent REALPLUS_BUSINESS - without paying Cortex AI credits. Also use it to run the agent eval set ("прогони eval", "self-test") or when the user mentions REALPLUS_BUSINESS, the RealPlus semantic view or the RealPlus agent.
 ---
 
 # RealPlus semantic (direct mode)
@@ -79,6 +79,22 @@ incomes, rent burden, evictions, definitions (NOI, LTV, DSCR, 421-a). Never for 
   sentence; never compute a difference or premium. RGB building figures cover buildings with rent stabilized units.
 - Questions that need both (our listings and market context): one `realplus_sql` call for our figure, one
   `market_report_search` call for the report figure, then put them side by side with their sources and periods.
+
+## Map area search (tools search_area_on_map, listings_in_area)
+
+For an area the user wants to draw or outline ("show on a map", "I'll draw the area", "these blocks", "inside this
+shape"). Both tools come from the plugin's local bridge (no AI credits; one plain SQL per search).
+
+- `search_area_on_map` opens an interactive map in the chat (Claude Desktop / claude.ai only; optional
+  `listing_type` Sale / Rental / Both and `borough` to center it). The user draws the area and the widget runs the
+  search itself. Then stop and wait: the result comes back as the user's next message (counts, medians and the
+  polygon WKT). Never invent an area.
+- `listings_in_area` takes `polygon` = `[[longitude, latitude], ...]` (3-200 corners) and returns counts and median
+  asking price per listing type plus up to 500 listings. Use it when the user gives the area as coordinates, or in
+  apps without the map (terminal Claude Code, Codex). Longitude first; New York longitudes are about -74.
+- Follow-up questions about a drawn area: filter `realplus_sql` with
+  `st_contains(to_geography('<WKT>'), st_makepoint(LONGITUDE, LATITUDE))` on `REALPLUS.SEMANTIC.LISTINGS`
+  (add `IS_ON_MARKET` for on-market only), using the WKT from the map result.
 
 ## Name index (`table.name` for SEMANTIC_VIEW)
 

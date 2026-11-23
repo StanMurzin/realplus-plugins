@@ -40,6 +40,16 @@ Restart the app, then ask, for example: *How many sales and rentals are on the m
 expensive sales near the Brooklyn Supreme Court* or *Brooklyn rentals under $5,000 with a private terrace*. The first time, a browser
 window opens: sign in with your Snowflake user. You stay signed in for 90 days.
 
+## Search on a map (Claude Desktop)
+
+Ask, for example: *Show rentals in Brooklyn on a map, I'll draw the area*. An interactive map opens in the chat:
+click **Draw area**, click the corners of the area, then **Finish** (or click the first point). You see the sales and
+rentals on the market inside it - count, median asking price, markers and a table (click a row to zoom to it).
+**Send to chat** passes the result and the area to Claude, so you can keep asking about it (*and 2-bedroom ones?*).
+
+The map shows in Claude Desktop. Terminal Claude Code and Codex can't show it; there ask with coordinates or by
+neighborhood. Map tiles: Esri, HERE, Garmin, (c) OpenStreetMap contributors.
+
 ## Update / remove
 
 ```
@@ -58,7 +68,10 @@ codex plugin remove realplus@realplus
 ## What's inside
 
 - `plugins/realplus/server.mjs`: [mcp-remote](https://github.com/geelen/mcp-remote) bundled with the server URL and
-  a public OAuth client id (PKCE, no secret).
+  a public OAuth client id (PKCE, no secret), plus the map search tools.
 - `plugins/realplus/skills/realplus-semantic`: answer rules, semantic view catalog and verified queries.
+- `plugins/realplus/assets/map.html`: the map widget (MCP Apps; [Leaflet](https://leafletjs.com) inlined). The
+  tools `search_area_on_map` and `listings_in_area` run inside `server.mjs`; the area search is one read-only SQL
+  query through the same Snowflake connection.
 
 No data and no credentials are stored in this repository.

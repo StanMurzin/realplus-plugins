@@ -17402,7 +17402,7 @@ var require_escape_html = __commonJS({
         return str;
       }
       var escape2;
-      var html = "";
+      var html2 = "";
       var index = 0;
       var lastIndex = 0;
       for (index = match.index; index < str.length; index++) {
@@ -17426,12 +17426,12 @@ var require_escape_html = __commonJS({
             continue;
         }
         if (lastIndex !== index) {
-          html += str.substring(lastIndex, index);
+          html2 += str.substring(lastIndex, index);
         }
         lastIndex = index + 1;
-        html += escape2;
+        html2 += escape2;
       }
-      return lastIndex !== index ? html + str.substring(lastIndex, index) : html;
+      return lastIndex !== index ? html2 + str.substring(lastIndex, index) : html2;
     }
   }
 });
@@ -17629,7 +17629,7 @@ var require_finalhandler = __commonJS({
       return typeof res.headersSent !== "boolean" ? Boolean(res._header) : res.headersSent;
     }
     function send(req, res, status, headers, message) {
-      function write() {
+      function write2() {
         var body = createHtmlDocument(message);
         res.statusCode = status;
         if (req.httpVersionMajor < 2) {
@@ -17650,11 +17650,11 @@ var require_finalhandler = __commonJS({
         res.end(body, "utf8");
       }
       if (isFinished(req)) {
-        write();
+        write2();
         return;
       }
       unpipe(req);
-      onFinished(req, write);
+      onFinished(req, write2);
       req.resume();
     }
     function setHeaders(res, headers) {
@@ -34951,7 +34951,7 @@ var require_api_pipeline = __commonJS({
     var {
       Readable,
       Duplex,
-      PassThrough
+      PassThrough: PassThrough2
     } = __require("node:stream");
     var assert2 = __require("node:assert");
     var { AsyncResource } = __require("node:async_hooks");
@@ -35138,7 +35138,7 @@ var require_api_pipeline = __commonJS({
         this.dispatch({ ...opts, body: pipelineHandler.req }, pipelineHandler);
         return pipelineHandler.ret;
       } catch (err) {
-        return new PassThrough().destroy(err);
+        return new PassThrough2().destroy(err);
       }
     }
     module.exports = pipeline;
@@ -78184,26 +78184,26 @@ var init_chunk_CGVEK4Z7 = __esm({
           const { props } = it;
           validatePatternProperties();
           function validatePatternProperties() {
-            for (const pat of patterns) {
-              if (checkProperties) checkMatchingProperties(pat);
-              if (it.allErrors) validateProperties(pat);
+            for (const pat2 of patterns) {
+              if (checkProperties) checkMatchingProperties(pat2);
+              if (it.allErrors) validateProperties(pat2);
               else {
                 gen.var(valid, true);
-                validateProperties(pat);
+                validateProperties(pat2);
                 gen.if(valid);
               }
             }
           }
-          function checkMatchingProperties(pat) {
-            for (const prop in checkProperties) if (new RegExp(pat).test(prop)) (0, util_1.checkStrictMode)(it, `property ${prop} matches pattern ${pat} (use allowMatchingProperties)`);
+          function checkMatchingProperties(pat2) {
+            for (const prop in checkProperties) if (new RegExp(pat2).test(prop)) (0, util_1.checkStrictMode)(it, `property ${prop} matches pattern ${pat2} (use allowMatchingProperties)`);
           }
-          function validateProperties(pat) {
+          function validateProperties(pat2) {
             gen.forIn("key", data, (key) => {
-              gen.if((0, codegen_1._)`${(0, code_1.usePattern)(cxt, pat)}.test(${key})`, () => {
-                const alwaysValid = alwaysValidPatterns.includes(pat);
+              gen.if((0, codegen_1._)`${(0, code_1.usePattern)(cxt, pat2)}.test(${key})`, () => {
+                const alwaysValid = alwaysValidPatterns.includes(pat2);
                 if (!alwaysValid) cxt.subschema({
                   keyword: "patternProperties",
-                  schemaProp: pat,
+                  schemaProp: pat2,
                   dataProp: key,
                   dataPropType: util_2.Type.Str
                 }, valid);
@@ -94158,26 +94158,26 @@ var init_proxy = __esm({
           const { props } = it;
           validatePatternProperties();
           function validatePatternProperties() {
-            for (const pat of patterns) {
-              if (checkProperties) checkMatchingProperties(pat);
-              if (it.allErrors) validateProperties(pat);
+            for (const pat2 of patterns) {
+              if (checkProperties) checkMatchingProperties(pat2);
+              if (it.allErrors) validateProperties(pat2);
               else {
                 gen.var(valid, true);
-                validateProperties(pat);
+                validateProperties(pat2);
                 gen.if(valid);
               }
             }
           }
-          function checkMatchingProperties(pat) {
-            for (const prop in checkProperties) if (new RegExp(pat).test(prop)) (0, util_1.checkStrictMode)(it, `property ${prop} matches pattern ${pat} (use allowMatchingProperties)`);
+          function checkMatchingProperties(pat2) {
+            for (const prop in checkProperties) if (new RegExp(pat2).test(prop)) (0, util_1.checkStrictMode)(it, `property ${prop} matches pattern ${pat2} (use allowMatchingProperties)`);
           }
-          function validateProperties(pat) {
+          function validateProperties(pat2) {
             gen.forIn("key", data, (key) => {
-              gen.if((0, codegen_1._)`${(0, code_1.usePattern)(cxt, pat)}.test(${key})`, () => {
-                const alwaysValid = alwaysValidPatterns.includes(pat);
+              gen.if((0, codegen_1._)`${(0, code_1.usePattern)(cxt, pat2)}.test(${key})`, () => {
+                const alwaysValid = alwaysValidPatterns.includes(pat2);
                 if (!alwaysValid) cxt.subschema({
                   keyword: "patternProperties",
-                  schemaProp: pat,
+                  schemaProp: pat2,
                   dataProp: key,
                   dataPropType: util_2.Type.Str
                 }, valid);
@@ -97169,17 +97169,258 @@ var init_proxy = __esm({
 });
 
 // ../codex_plugin/entry.mjs
-import { readFileSync } from "node:fs";
+import { readFileSync as readFileSync2 } from "node:fs";
 
 // server/config.json
 var config_default = {
-  server_url: "https://usullub-ntb72697.snowflakecomputing.com/api/v2/databases/REALPLUS/schemas/AI/mcp-servers/REALPLUS_MCP",
+  server_url: "https://xhkecyj-idb60760.snowflakecomputing.com/api/v2/databases/REALPLUS/schemas/AI/mcp-servers/REALPLUS_MCP",
   callback_port: "33418",
-  client_info: { client_id: "Kbqin52pnBXfXkgFm/iDncsSD7I=" },
-  client_metadata: { token_endpoint_auth_method: "none" }
+  client_info: {
+    client_id: "3WvuzCGMqX4PC1B6jv3XOYRrjfw="
+  },
+  client_metadata: {
+    token_endpoint_auth_method: "none"
+  }
 };
 
+// ../codex_plugin/map_tools.mjs
+import { readFileSync } from "node:fs";
+import { PassThrough } from "node:stream";
+var MAP_URI = "ui://realplus/map.html";
+var MIME = "text/html;profile=mcp-app";
+var MAX_POINTS = 200;
+var MAX_ROWS = 500;
+var BOX = { lonMin: -74.6, lonMax: -73.3, latMin: 40.3, latMax: 41.1 };
+var mapHtml = null;
+function html() {
+  if (mapHtml === null) {
+    try {
+      mapHtml = readFileSync(new URL("./assets/map.html", import.meta.url), "utf8");
+    } catch {
+      mapHtml = "<!doctype html><p>RealPlus map widget is missing from the plugin (assets/map.html).</p>";
+    }
+  }
+  return mapHtml;
+}
+var CSP = { resourceDomains: ["https://server.arcgisonline.com"], connectDomains: [] };
+var TOOLS = [
+  {
+    name: "search_area_on_map",
+    title: "RealPlus: search on map",
+    description: "Open an interactive map of New York City in the chat where the user draws an area (clicks the corners of a polygon) and sees the on-market sales and rentals inside it: count, median asking price, markers and a table. Use it when the user wants to pick an area on a map, draw a shape, outline a few blocks, or search 'here' / 'inside this area'. Optional: listing_type (Sale, Rental or Both) and borough to center the map. The user draws; the widget runs the search itself and can send the result and the polygon (WKT, lon/lat) back to the chat. Works only in apps that show interactive widgets (Claude Desktop, claude.ai); elsewhere ask the user for the area in words or as coordinates and use listings_in_area.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        listing_type: { type: "string", enum: ["Sale", "Rental", "Both"], description: "Default Both" },
+        borough: {
+          type: "string",
+          enum: ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"],
+          description: "Center the map on this borough"
+        }
+      },
+      additionalProperties: false
+    },
+    annotations: { title: "Search listings on a map", readOnlyHint: true, openWorldHint: false },
+    _meta: { ui: { resourceUri: MAP_URI }, "ui/resourceUri": MAP_URI }
+  },
+  {
+    name: "listings_in_area",
+    title: "RealPlus: listings in area",
+    description: "On-market New York listings inside a polygon. polygon = array of [longitude, latitude] corners (3 to 200, the ring is closed automatically), WGS84. Returns the total count and median asking price per listing type and up to `limit` listings (default 300, max 500) with address, unit, neighborhood, bedrooms, bathrooms, square feet, asking price, days on market and coordinates. Rentals: asking price = monthly rent.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        polygon: {
+          type: "array",
+          minItems: 3,
+          maxItems: MAX_POINTS,
+          items: { type: "array", items: { type: "number" }, minItems: 2, maxItems: 2 },
+          description: "[[lon, lat], ...]"
+        },
+        listing_type: { type: "string", enum: ["Sale", "Rental", "Both"] },
+        limit: { type: "integer", minimum: 1, maximum: MAX_ROWS }
+      },
+      required: ["polygon"],
+      additionalProperties: false
+    },
+    annotations: { title: "Listings inside a polygon", readOnlyHint: true, openWorldHint: false }
+  }
+];
+var RESOURCES = [
+  {
+    uri: MAP_URI,
+    name: "RealPlus map search",
+    description: "Draw an area on a map of New York and see the on-market listings inside it",
+    mimeType: MIME,
+    _meta: { ui: { csp: CSP, prefersBorder: true } }
+  }
+];
+function polygonWkt(points) {
+  if (!Array.isArray(points) || points.length < 3 || points.length > MAX_POINTS) {
+    throw new Error(`polygon needs 3 to ${MAX_POINTS} [lon, lat] points`);
+  }
+  const ring = points.map((p, i) => {
+    if (!Array.isArray(p) || p.length !== 2) throw new Error(`point ${i} is not [lon, lat]`);
+    const [lon, lat] = p.map(Number);
+    if (!Number.isFinite(lon) || !Number.isFinite(lat)) throw new Error(`point ${i} is not numeric`);
+    if (lon < BOX.lonMin || lon > BOX.lonMax || lat < BOX.latMin || lat > BOX.latMax) {
+      throw new Error(`point ${i} (${lon}, ${lat}) is outside New York City - expected [longitude, latitude]`);
+    }
+    return [Math.round(lon * 1e6) / 1e6, Math.round(lat * 1e6) / 1e6];
+  });
+  const [f, l] = [ring[0], ring[ring.length - 1]];
+  if (f[0] !== l[0] || f[1] !== l[1]) ring.push(f);
+  return `POLYGON((${ring.map(([x, y]) => `${x} ${y}`).join(", ")}))`;
+}
+function areaSql({ polygon, listing_type, limit }) {
+  const wkt = polygonWkt(polygon);
+  const type = listing_type === "Sale" || listing_type === "Rental" ? listing_type : null;
+  const n = Math.min(Math.max(parseInt(limit ?? 300, 10) || 300, 1), MAX_ROWS);
+  return `with area as (select to_geography('${wkt}') as g),
+inside as (
+    select l.LISTING_ID, l.LISTING_TYPE, l.ADDRESS, l.UNIT, l.NEIGHBORHOOD, l.BOROUGH, l.BEDROOMS, l.BATHROOMS,
+           l.SQUARE_FEET, l.ASKING_PRICE, l.DAYS_ON_MARKET, l.LATITUDE, l.LONGITUDE
+    from REALPLUS.SEMANTIC.LISTINGS as l, area
+    where l.IS_ON_MARKET
+      and l.LATITUDE is not null
+      and l.ADDRESS not ilike '%TEST STREET%'
+      ${type ? `and l.LISTING_TYPE = '${type}'` : ""}
+      and st_contains(area.g, st_makepoint(l.LONGITUDE, l.LATITUDE))
+)
+select *, count(*) over (partition by LISTING_TYPE) as TYPE_COUNT,
+       median(ASKING_PRICE) over (partition by LISTING_TYPE) as TYPE_MEDIAN_PRICE,
+       count(*) over () as TOTAL_COUNT,
+       round(st_area((select g from area)) / 1e6, 3) as AREA_KM2
+from inside
+order by ASKING_PRICE desc nulls last
+limit ${n}`;
+}
+function reshape(sfText, args) {
+  const d = JSON.parse(sfText);
+  const cols = d.result_set.resultSetMetaData.rowType.map((c) => c.name);
+  const rows = d.result_set.data.map((r) => Object.fromEntries(cols.map((c, i) => [c, r[i]])));
+  const num = (v) => v === null || v === void 0 || v === "" ? null : Number(v);
+  const byType = {};
+  for (const r of rows) {
+    byType[r.LISTING_TYPE] = { listing_type: r.LISTING_TYPE, count: num(r.TYPE_COUNT), median_asking_price: num(r.TYPE_MEDIAN_PRICE) };
+  }
+  const total = rows.length ? num(rows[0].TOTAL_COUNT) : 0;
+  return {
+    polygon_wkt: polygonWkt(args.polygon),
+    area_km2: rows.length ? num(rows[0].AREA_KM2) : null,
+    total_on_market: total,
+    by_type: Object.values(byType),
+    listings_returned: rows.length,
+    truncated: total > rows.length,
+    listings: rows.map((r) => ({
+      id: num(r.LISTING_ID),
+      type: r.LISTING_TYPE,
+      address: r.ADDRESS,
+      unit: r.UNIT,
+      neighborhood: r.NEIGHBORHOOD,
+      borough: r.BOROUGH,
+      bedrooms: num(r.BEDROOMS),
+      bathrooms: num(r.BATHROOMS),
+      sqft: num(r.SQUARE_FEET),
+      price: num(r.ASKING_PRICE),
+      dom: num(r.DAYS_ON_MARKET),
+      lat: num(r.LATITUDE),
+      lon: num(r.LONGITUDE)
+    })),
+    query_id: d.query_id
+  };
+}
+function summaryText(res) {
+  if (!res.total_on_market) return `No on-market listings inside the area (${res.area_km2} km\xB2). Polygon: ${res.polygon_wkt}`;
+  const parts = res.by_type.map((t) => `${t.count.toLocaleString("en-US")} ${t.listing_type === "Rental" ? "rentals" : "sales"} (median $${Math.round(t.median_asking_price).toLocaleString("en-US")}${t.listing_type === "Rental" ? "/month" : ""})`);
+  return `${parts.join(", ")} on the market inside the area (${res.area_km2} km\xB2)` + (res.truncated ? `; ${res.listings_returned} most expensive listed` : "") + `. Polygon WKT: ${res.polygon_wkt}`;
+}
+function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-map] ${m}
+`) } = {}) {
+  const realStdin = process.stdin;
+  const realWrite = process.stdout.write.bind(process.stdout);
+  const toClient = (msg) => realWrite(JSON.stringify(msg) + "\n");
+  const clientIn = new PassThrough();
+  Object.defineProperty(process, "stdin", { value: clientIn, configurable: true, writable: true });
+  const pending = /* @__PURE__ */ new Map();
+  let buf = "";
+  realStdin.setEncoding("utf8");
+  realStdin.on("data", (chunk) => {
+    buf += chunk;
+    let i;
+    while ((i = buf.indexOf("\n")) >= 0) {
+      const line = buf.slice(0, i);
+      buf = buf.slice(i + 1);
+      if (line.trim()) onClientLine(line);
+    }
+  });
+  realStdin.on("end", () => clientIn.end());
+  function onClientLine(line) {
+    let m;
+    try {
+      m = JSON.parse(line);
+    } catch {
+      return clientIn.write(line + "\n");
+    }
+    const { id, method, params } = m;
+    if (method === "initialize") {
+      const ui = params?.capabilities?.extensions?.["io.modelcontextprotocol/ui"];
+      log2(`client ${params?.clientInfo?.name} ${params?.clientInfo?.version}; MCP Apps capability: ${ui ? JSON.stringify(ui) : "none"}`);
+      pending.set(id, { method });
+    } else if (method === "tools/list") {
+      pending.set(id, { method });
+    } else if (method === "resources/list") {
+      return toClient({ jsonrpc: "2.0", id, result: { resources: RESOURCES } });
+    } else if (method === "resources/templates/list") {
+      return toClient({ jsonrpc: "2.0", id, result: { resourceTemplates: [] } });
+    } else if (method === "resources/read") {
+      if (params?.uri === MAP_URI) {
+        return toClient({ jsonrpc: "2.0", id, result: { contents: [{ uri: MAP_URI, mimeType: MIME, text: html(), _meta: { ui: { csp: CSP, prefersBorder: true } } }] } });
+      }
+      return toClient({ jsonrpc: "2.0", id, error: { code: -32002, message: `Resource not found: ${params?.uri}` } });
+    } else if (method === "tools/call" && params?.name === "search_area_on_map") {
+      const a = params.arguments || {};
+      const text = `Map opened for the user${a.borough ? ` (centered on ${a.borough})` : ""}${a.listing_type && a.listing_type !== "Both" ? `, ${a.listing_type.toLowerCase()}s only` : ""}. The user draws the area and runs the search in the widget; the result comes back as their next message. Do not guess an area - wait for it.`;
+      return toClient({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text }], structuredContent: { listing_type: a.listing_type || "Both", borough: a.borough || null } } });
+    } else if (method === "tools/call" && params?.name === "listings_in_area") {
+      const args = params.arguments || {};
+      let sql;
+      try {
+        sql = areaSql(args);
+      } catch (e) {
+        return toClient({ jsonrpc: "2.0", id, result: { isError: true, content: [{ type: "text", text: String(e.message || e) }] } });
+      }
+      pending.set(id, { method: "listings_in_area", args });
+      m.params = { ...params, name: "realplus_sql", arguments: { sql } };
+      return clientIn.write(JSON.stringify(m) + "\n");
+    }
+    clientIn.write(line + "\n");
+  }
+  return function editServerMessage2(message) {
+    if (message?.id === void 0 || !pending.has(message.id) || message.method) return message;
+    const p = pending.get(message.id);
+    pending.delete(message.id);
+    if (!message.result) return message;
+    if (p.method === "initialize") {
+      message.result.capabilities = { ...message.result.capabilities || {}, resources: { ...message.result.capabilities?.resources || {} } };
+    } else if (p.method === "tools/list") {
+      message.result.tools = [...message.result.tools || [], ...TOOLS];
+    } else if (p.method === "listings_in_area") {
+      const text = message.result.content?.[0]?.text;
+      if (message.result.isError || !text) return message;
+      try {
+        const res = reshape(text, p.args);
+        message.result = { content: [{ type: "text", text: summaryText(res) + "\n" + JSON.stringify(res) }], structuredContent: res };
+      } catch (e) {
+        message.result = { isError: true, content: [{ type: "text", text: `listings_in_area: ${e.message}` }] };
+      }
+    }
+    return message;
+  };
+}
+
 // ../codex_plugin/entry.mjs
+var pat = process.env.REALPLUS_MCP_PAT_AUTH === "1" ? process.env.REALPLUS_MCP_PAT : "";
 process.argv = [
   process.argv[0],
   "mcp-remote",
@@ -97187,36 +97428,45 @@ process.argv = [
   config_default.callback_port,
   "--transport",
   "http-only",
-  "--static-oauth-client-info",
-  JSON.stringify(config_default.client_info),
-  "--static-oauth-client-metadata",
-  JSON.stringify(config_default.client_metadata)
+  ...pat ? ["--header", `Authorization:Bearer ${pat}`, "--header", "X-Snowflake-Authorization-Token-Type:PROGRAMMATIC_ACCESS_TOKEN"] : [
+    "--static-oauth-client-info",
+    JSON.stringify(config_default.client_info),
+    "--static-oauth-client-metadata",
+    JSON.stringify(config_default.client_metadata)
+  ]
 ];
 var icons = [["icon-64.png", "64x64"], ["icon.png", "256x256"]].flatMap(([file2, sizes]) => {
   try {
-    const png = readFileSync(new URL(`./assets/${file2}`, import.meta.url)).toString("base64");
+    const png = readFileSync2(new URL(`./assets/${file2}`, import.meta.url)).toString("base64");
     return [{ src: `data:image/png;base64,${png}`, mimeType: "image/png", sizes: [sizes] }];
   } catch {
     return [];
   }
 });
-if (icons.length) {
-  const write = process.stdout.write.bind(process.stdout);
-  process.stdout.write = (chunk, ...rest) => {
-    const text = typeof chunk === "string" ? chunk : Buffer.isBuffer(chunk) ? chunk.toString("utf8") : null;
-    if (text && text.includes('"serverInfo"')) {
-      try {
-        const message = JSON.parse(text);
-        if (message.result?.serverInfo && !message.result.serverInfo.icons) {
-          message.result.serverInfo.icons = icons;
-          return write(JSON.stringify(message) + "\n", ...rest);
-        }
-      } catch {
-      }
+var editServerMessage = installMapTools();
+var write = process.stdout.write.bind(process.stdout);
+var pendingOut = "";
+process.stdout.write = (chunk, ...rest) => {
+  const text = typeof chunk === "string" ? chunk : Buffer.isBuffer(chunk) ? chunk.toString("utf8") : null;
+  if (text === null) return write(chunk, ...rest);
+  pendingOut += text;
+  let out = "";
+  let i;
+  while ((i = pendingOut.indexOf("\n")) >= 0) {
+    const line = pendingOut.slice(0, i);
+    pendingOut = pendingOut.slice(i + 1);
+    let message;
+    try {
+      message = JSON.parse(line);
+    } catch {
+      out += line + "\n";
+      continue;
     }
-    return write(chunk, ...rest);
-  };
-}
+    if (icons.length && message.result?.serverInfo && !message.result.serverInfo.icons) message.result.serverInfo.icons = icons;
+    out += JSON.stringify(editServerMessage(message)) + "\n";
+  }
+  return out ? write(out, ...rest) : true;
+};
 await Promise.resolve().then(() => (init_proxy(), proxy_exports));
 /*! Bundled license information:
 

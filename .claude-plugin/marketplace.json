@@ -8,8 +8,8 @@
     {
       "name": "realplus",
       "source": "./plugins/realplus",
-      "description": "Ask RealPlus real estate questions; Claude queries the Snowflake semantic view REALPLUS_BUSINESS and searches listing descriptions and public NYC housing reports.",
-      "version": "1.6.0",
+      "description": "Ask RealPlus real estate questions; Claude queries the Snowflake semantic view REALPLUS_BUSINESS and searches listing descriptions and public NYC housing reports, and finds listings inside an area drawn on a map.",
+      "version": "1.8.0",
       "category": "data"
     }
   ]
