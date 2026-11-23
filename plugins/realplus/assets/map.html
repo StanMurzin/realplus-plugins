@@ -708,9 +708,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
   .leaflet-container { font: inherit; background: var(--bg2); }
   .vertex { cursor: pointer; }
   .hood { pointer-events: none; }
-  .hood span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 11px; font-weight: 600;
-               color: #334155; letter-spacing: .02em; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 0 2px #fff; }
-  :root.dark .hood span { color: #e2e8f0; text-shadow: 0 0 3px #000, 0 0 3px #000; }
+  /* The basemap is always light, so the names stay dark in the dark theme too: navy text, solid white halo. */
+  .hood span { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; font-size: 12px; font-weight: 700;
+               color: #0b1f4d; letter-spacing: .01em;
+               text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff, 0 0 4px #fff, 0 0 4px #fff; }
   label.chk { display: inline-flex; align-items: center; gap: 4px; color: var(--sub); cursor: pointer; }
 </style>
 </head>
@@ -875,7 +876,7 @@ const int = (v) => v == null ? "–" : Math.round(v).toLocaleString("en-US");
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 (async () => {
-  const app = new App({ name: "RealPlus map search", version: "1.8.2" }, {}, { autoResize: true });
+  const app = new App({ name: "RealPlus map search", version: "1.8.3" }, {}, { autoResize: true });
 
   // ---------------------------------------------------------------- map
   const map = L.map("map", { zoomControl: true, doubleClickZoom: false }).fitBounds([[40.70, -74.02], [40.82, -73.93]]);
@@ -891,7 +892,7 @@ const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<
 
   // Neighborhood borders always, names from zoom 13 (where blocks are distinguishable) - inlined at build time.
   const HOODS = window.NYC_NEIGHBORHOODS || { type: "FeatureCollection", features: [] };
-  const hoodLines = L.geoJSON(HOODS, { interactive: false, style: { color: "#475569", weight: 1, opacity: 0.6, fill: false, dashArray: "3 3" } });
+  const hoodLines = L.geoJSON(HOODS, { interactive: false, style: { color: "#1e3a8a", weight: 1.2, opacity: 0.55, fill: false, dashArray: "4 3" } });
   const hoodLabels = L.layerGroup(HOODS.features.map((f) => L.marker([f.properties.lat, f.properties.lon], {
     interactive: false, keyboard: false, icon: L.divIcon({ className: "hood", html: `<span>${esc(f.properties.name)}</span>`, iconSize: null }) })));
   function showHoods() {
