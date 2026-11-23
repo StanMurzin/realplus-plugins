@@ -18521,7 +18521,7 @@ var require_view = __commonJS({
     var dirname = path3.dirname;
     var basename = path3.basename;
     var extname = path3.extname;
-    var join = path3.join;
+    var join2 = path3.join;
     var resolve = path3.resolve;
     module.exports = View;
     function View(name, options) {
@@ -18569,12 +18569,12 @@ var require_view = __commonJS({
     };
     View.prototype.resolve = function resolve2(dir, file2) {
       var ext = this.ext;
-      var path4 = join(dir, file2);
+      var path4 = join2(dir, file2);
       var stat = tryStat(path4);
       if (stat && stat.isFile()) {
         return path4;
       }
-      path4 = join(dir, basename(file2, ext), "index" + ext);
+      path4 = join2(dir, basename(file2, ext), "index" + ext);
       stat = tryStat(path4);
       if (stat && stat.isFile()) {
         return path4;
@@ -19207,7 +19207,7 @@ var require_send = __commonJS({
     var Stream = __require("stream");
     var util = __require("util");
     var extname = path3.extname;
-    var join = path3.join;
+    var join2 = path3.join;
     var normalize = path3.normalize;
     var resolve = path3.resolve;
     var sep = path3.sep;
@@ -19426,7 +19426,7 @@ var require_send = __commonJS({
           return res;
         }
         parts = path4.split(sep);
-        path4 = normalize(join(root, path4));
+        path4 = normalize(join2(root, path4));
       } else {
         if (UP_PATH_REGEXP.test(path4)) {
           debug('malicious path "%s"', path4);
@@ -19561,7 +19561,7 @@ var require_send = __commonJS({
           if (err) return self.onStatError(err);
           return self.error(404);
         }
-        var p = join(path4, self._index[i]);
+        var p = join2(path4, self._index[i]);
         debug('stat "%s"', p);
         fs7.stat(p, function(err2, stat) {
           if (err2) return next(err2);
@@ -97184,13 +97184,30 @@ var config_default = {
 };
 
 // ../codex_plugin/map_tools.mjs
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 var MAP_URI = "ui://realplus/map.html";
 var MIME = "text/html;profile=mcp-app";
 var MAX_POINTS = 200;
 var MAX_ROWS = 500;
 var BOX = { lonMin: -74.6, lonMax: -73.3, latMin: 40.3, latMax: 41.1 };
 var mapHtml = null;
+var LAST_AREA_FILE = join(tmpdir(), "realplus-map-last-area.json");
+function saveLastArea(a) {
+  try {
+    writeFileSync(LAST_AREA_FILE, JSON.stringify(a), "utf8");
+  } catch {
+  }
+}
+function loadLastArea() {
+  try {
+    const a = JSON.parse(readFileSync(LAST_AREA_FILE, "utf8"));
+    return Date.now() - Date.parse(a.searched_at) < 12 * 3600 * 1e3 ? a : null;
+  } catch {
+    return null;
+  }
+}
 function html() {
   if (mapHtml === null) {
     try {
@@ -97243,6 +97260,13 @@ var TOOLS = [
       additionalProperties: false
     },
     annotations: { title: "Listings inside a polygon", readOnlyHint: true, openWorldHint: false }
+  },
+  {
+    name: "drawn_map_area",
+    title: "RealPlus: area drawn on the map",
+    description: "The area the user last searched on the RealPlus map in this chat session: polygon WKT (lon lat), area, on-market count and median asking price per listing type, and the listings returned. Call it whenever the user refers to the area they drew or outlined on the map ('the area I drew', 'this neighborhood', '\u043F\u043E \u0440\u0430\u0439\u043E\u043D\u0443, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u044F \u043E\u0431\u0432\u0451\u043B') and the map result is not already in the conversation. Then use the WKT with realplus_sql (st_contains(to_geography(wkt), st_makepoint(LONGITUDE, LATITUDE))) for follow-up questions.",
+    inputSchema: { type: "object", properties: {}, additionalProperties: false },
+    annotations: { title: "Area drawn on the map", readOnlyHint: true, openWorldHint: false }
   }
 ];
 var RESOURCES = [
@@ -97398,9 +97422,20 @@ function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-ma
         return toClient({ jsonrpc: "2.0", id, result: { contents: [{ uri: MAP_URI, mimeType: MIME, text: html(), _meta: { ui: { csp: CSP, prefersBorder: true } } }] } });
       }
       return toClient({ jsonrpc: "2.0", id, error: { code: -32002, message: `Resource not found: ${params?.uri}` } });
+    } else if (method === "tools/call" && params?.name === "drawn_map_area") {
+      const lastArea = loadLastArea();
+      if (!lastArea) {
+        return toClient({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text: "No area has been searched on the map yet. Ask the user to draw the area on the map and press Finish (or open the map with search_area_on_map)." }] } });
+      }
+      const brief = { ...lastArea, listings: lastArea.listings.slice(0, 50) };
+      return toClient({ jsonrpc: "2.0", id, result: {
+        content: [{ type: "text", text: `Area drawn on the map (searched ${lastArea.searched_at}, ${lastArea.listing_type}): ${summaryText(lastArea)}
+` + JSON.stringify(brief) }],
+        structuredContent: brief
+      } });
     } else if (method === "tools/call" && params?.name === "search_area_on_map") {
       const a = params.arguments || {};
-      const text = `Map opened for the user${a.borough ? ` (centered on ${a.borough})` : ""}${a.listing_type && a.listing_type !== "Both" ? `, ${a.listing_type.toLowerCase()}s only` : ""}. The user draws the area and runs the search in the widget; the result comes back as their next message. Do not guess an area - wait for it.`;
+      const text = `Map opened for the user${a.borough ? ` (centered on ${a.borough})` : ""}${a.listing_type && a.listing_type !== "Both" ? `, ${a.listing_type.toLowerCase()}s only` : ""}. The user draws the area and runs the search in the widget. When they ask about it, use the map result in their message, or call drawn_map_area to get the polygon and the numbers. Do not guess an area.`;
       return toClient({ jsonrpc: "2.0", id, result: { content: [{ type: "text", text }], structuredContent: { listing_type: a.listing_type || "Both", borough: a.borough || null } } });
     } else if (method === "tools/call" && params?.name === "listings_in_area") {
       const args = params.arguments || {};
@@ -97424,13 +97459,14 @@ function installMapTools({ log: log2 = (m) => process.stderr.write(`[realplus-ma
     if (p.method === "initialize") {
       message.result.capabilities = { ...message.result.capabilities || {}, resources: { ...message.result.capabilities?.resources || {} } };
     } else if (p.method === "tools/list") {
-      const [mapTool, areaTool] = TOOLS;
-      message.result.tools = process.env.REALPLUS_MAP_ONLY === "1" ? [mapTool, { ...areaTool, _meta: { ui: { visibility: ["app"] } } }] : [...message.result.tools || [], areaTool];
+      const [mapTool, areaTool, drawnTool] = TOOLS;
+      message.result.tools = process.env.REALPLUS_MAP_ONLY === "1" ? [mapTool, drawnTool, { ...areaTool, _meta: { ui: { visibility: ["app"] } } }] : [...message.result.tools || [], areaTool];
     } else if (p.method === "listings_in_area") {
       const text = message.result.content?.[0]?.text;
       if (message.result.isError || !text) return message;
       try {
         const res = reshape(text, p.args);
+        saveLastArea({ ...res, searched_at: (/* @__PURE__ */ new Date()).toISOString(), listing_type: p.args.listing_type || "Both" });
         message.result = { content: [{ type: "text", text: summaryText(res) + "\n" + JSON.stringify(res) }], structuredContent: res };
       } catch (e) {
         message.result = { isError: true, content: [{ type: "text", text: `listings_in_area: ${e.message}` }] };

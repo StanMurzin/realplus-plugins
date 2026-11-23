@@ -87,8 +87,9 @@ shape"). Both tools come from the plugin's local bridge (no AI credits; one plai
 
 - `search_area_on_map` opens an interactive map in the chat. It comes from the Claude Desktop extension
   **RealPlus Map**, not from this plugin (optional `listing_type` Sale / Rental / Both and `borough` to center it).
-  The user draws the area and the widget runs the search itself. Then stop and wait: the result comes back as the
-  user's next message (counts, medians and the polygon WKT). Never invent an area.
+  The user draws the area and the widget runs the search itself. Then stop and wait. Never invent an area.
+- The user asks about "the area I drew" / "этот район" and no map result (polygon WKT) is in the conversation: call
+  `drawn_map_area` (also from the extension) - it returns the last searched polygon WKT, counts and medians.
 - No `search_area_on_map` tool in the list: say the map needs the RealPlus Map extension for Claude Desktop
   (https://github.com/StanMurzin/realplus-plugins/releases/latest/download/realplus-map.mcpb, Settings -> Extensions
   -> Install Extension) and offer to search by neighborhood names or coordinates instead.
